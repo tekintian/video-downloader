@@ -70,7 +70,7 @@ class PlayerPage:
                 ft.Container(
                     content=self.get_video_display(),
                     width=800,
-                    height=450
+                    height=450,
                     border_radius=12
                 ),
                 
@@ -177,7 +177,7 @@ class PlayerPage:
                     )
                 ])
             ]),
-            padding=ft.padding.all(15)
+            padding=ft.padding.all(15),
             border_radius=8,
             margin=ft.margin.only(bottom=20)
         )
@@ -247,7 +247,7 @@ class PlayerPage:
                         size=32
                     ),
                     width=60,
-                    height=40
+                    height=40,
                     border_radius=4
                 ),
                 
@@ -280,7 +280,7 @@ class PlayerPage:
                     )
                 ])
             ]),
-            padding=ft.padding.symmetric(vertical=8, horizontal=10)
+            padding=ft.padding.symmetric(vertical=8, horizontal=10),
             border_radius=6,
             margin=ft.margin.only(bottom=5)
         )

@@ -90,7 +90,7 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon("download"
+                    ft.Icon("download"),
                     ft.Text(
                         "下载设置",
                         size=20,
@@ -137,7 +137,7 @@ class SettingsPage:
                         width=100,
                         text_align=ft.TextAlign.RIGHT
                     ),
-                    ft.Text("秒"
+                    ft.Text("秒"),
                 ]),
                 
                 # 重试次数
@@ -153,7 +153,7 @@ class SettingsPage:
                     )
                 ])
             ], spacing=15),
-            padding=ft.padding.all(20)
+            padding=ft.padding.all(20),
             border_radius=12
         )
     
@@ -162,7 +162,7 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(ft-icons.HD_ROUNDED
+                    ft.Icon(ft.icons.HD_ROUNDED),
                     ft.Text(
                         "视频质量",
                         size=20,
@@ -208,7 +208,7 @@ class SettingsPage:
                     )
                 ])
             ], spacing=15),
-            padding=ft.padding.all(20)
+            padding=ft.padding.all(20),
             border_radius=12
         )
     
@@ -217,7 +217,7 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(ft-icons.API_ROUNDED
+                    ft.Icon(ft.icons.API_ROUNDED),
                     ft.Text(
                         "API设置",
                         size=20,
@@ -248,11 +248,11 @@ class SettingsPage:
                 
                 ft.Text(
                     "官方API解析速度快但可能受限，yt-dlp兼容性好但速度较慢",
-                    size=12
+                    size=12,
                     italic=True
                 )
             ], spacing=15),
-            padding=ft.padding.all(20)
+            padding=ft.padding.all(20),
             border_radius=12
         )
     
@@ -261,7 +261,7 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(ft-icons.PALETTE_ROUNDED
+                    ft.Icon(ft.icons.PALETTE_ROUNDED),
                     ft.Text(
                         "外观设置",
                         size=20,
@@ -294,7 +294,7 @@ class SettingsPage:
                     )
                 ])
             ], spacing=15),
-            padding=ft.padding.all(20)
+            padding=ft.padding.all(20),
             border_radius=12
         )
     
@@ -303,7 +303,7 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(ft-icons.TUNING_ROUNDED
+                    ft.Icon(ft.icons.TUNING_ROUNDED),
                     ft.Text(
                         "高级设置",
                         size=20,
@@ -332,7 +332,7 @@ class SettingsPage:
                     )
                 ])
             ], spacing=15),
-            padding=ft.padding.all(20)
+            padding=ft.padding.all(20),
             border_radius=12
         )
     
