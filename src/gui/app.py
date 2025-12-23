@@ -35,13 +35,34 @@ class VideoDownloaderApp:
     async def main(self, page: Page):
         """Flet主入口"""
         self.page = page
-        await self.setup_page(page)
-        await self.setup_navigation(page)
-        
-        # 显示默认页面
-        await self.show_home()
-        
-        page.update()
+        # 记录启动日志以便排查 GUI 未出现的问题
+        try:
+            from pathlib import Path
+            import datetime
+            Path('flet-start.log').write_text(f"main started at {datetime.datetime.now().isoformat()}, page.web={getattr(page, 'web', None)}\n")
+        except Exception:
+            pass
+
+        try:
+            await self.setup_page(page)
+            from pathlib import Path
+            import datetime
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"setup_page done at {datetime.datetime.now().isoformat()}\n")
+
+            await self.setup_navigation(page)
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"setup_navigation done at {datetime.datetime.now().isoformat()}\n")
+            
+            # 显示默认页面
+            await self.show_home()
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"show_home done at {datetime.datetime.now().isoformat()}\n")
+            
+            page.update()
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"page.update called at {datetime.datetime.now().isoformat()}\n")
+        except Exception as e:
+            import traceback
+            from pathlib import Path
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + "EXCEPTION:\n" + traceback.format_exc())
+            raise
     
     async def setup_page(self, page: Page):
         """配置页面"""
@@ -223,8 +244,11 @@ class VideoDownloaderApp:
             await self.start_download(download_item)
             
         except Exception as e:
-            import logging
+            import logging, traceback, pathlib, datetime
+            traceback_text = traceback.format_exc()
             logging.error(f"URL解析错误: {e}")
+            # 将完整的 traceback 写入文件，便于打包后查看
+            pathlib.Path('last-exception.log').write_text(f"{datetime.datetime.now().isoformat()}\n" + traceback_text)
             await self.show_error(f"解析失败: {str(e)}")
         finally:
             self.hide_loading()
@@ -314,9 +338,10 @@ def main():
     """默认启动函数（桌面端）"""
     ft.app(target=app.main)
 
-def run_web():
+def run_web(host: str = '127.0.0.1', port: int = 8000):
     """运行Web版本"""
-    ft.app(target=app.main, view=ft.AppView.WEB_BROWSER, port=8000)
+    print(f"Starting Web server on http://{host}:{port}")
+    ft.app(target=app.main, view=ft.AppView.WEB_BROWSER, port=port, host=host)
 
 def run_desktop():
     """运行桌面版本"""
