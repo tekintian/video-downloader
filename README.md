@@ -209,6 +209,26 @@ mypy src/
 - `tenacity`: Retry logic
 - `pathvalidate`: Safe filename handling
 
+## CI / Cross-platform builds ✅
+
+This repository includes a GitHub Actions workflow that automatically builds both Python packages and desktop executables for multiple platforms (Windows, macOS, Linux) on pushes to `main` and when tags `v*` are pushed.
+
+- What it builds:
+  - Python sdist and wheel (`dist/*.tar.gz`, `dist/*.whl`)
+  - Desktop standalone executables created with `PyInstaller` for **Windows / macOS / Linux** (zipped artifacts uploaded to Actions artifacts)
+  - When you push a tag like `v1.2.3`, the workflow will also create a GitHub Release and attach the build artifacts.
+
+- Where to find artifacts:
+  - Open the **Actions** tab and select the workflow run for the commit/tag. Download artifacts from the run artifacts list.
+  - For tagged releases (`v*`), check the **Releases** page for attached assets.
+
+- How to trigger manually:
+  - Use the **Actions → workflow_dispatch** button, or push a tag (`git tag vX.Y.Z && git push origin vX.Y.Z`).
+
+- Notes & extension points:
+  - The current workflow uses `pyinstaller` to produce desktop binaries. If you prefer `flet-pack` or `buildozer` for mobile builds (Android/iOS), the workflow can be extended to add those jobs.
+  - Signing macOS `.app` or Windows installers requires additional secrets / signing keys and is not automated by default.
+
 ## Contributing
 
 1. Fork the repository
