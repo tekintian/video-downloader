@@ -61,7 +61,8 @@ jobs:
         shell: bash
         run: |
           # Ensure working dir is repo root where main_gui.py exists
-          pyinstaller --noconfirm --clean --onefile --name "video-downloader" --windowed main_gui.py
+          # Add src to PyInstaller search paths so `import gui` (from src/gui) resolves
+          pyinstaller --noconfirm --clean --onefile --paths src --name "video-downloader" --windowed main_gui.py
 
       - name: Package build artifact (Linux / macOS)
         if: runner.os != 'Windows'

@@ -39,7 +39,6 @@ class DownloadItem(ft.Container):
             content=self.build_item(),
             padding=ft.padding.all(12),
             border_radius=8,
-            bgcolor=self.get_background_color(),
             border=ft.border.all(1, ft.Colors.OUTLINE_VARIANT),
             margin=ft.margin.only(bottom=8)
         )
@@ -61,32 +60,27 @@ class DownloadItem(ft.Container):
                         self.title,
                         size=14,
                         weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.WHITE,
                         max_lines=2,
                         overflow=ft.TextOverflow.ELLIPSIS
                     ),
                     ft.Row([
                         ft.Icon(
                             "person",
-                            size=14,
-                            color=ft.Colors.WHITE
+                            size=14
                         ),
                         ft.Text(
                             self.uploader,
                             size=12,
-                            color=ft.Colors.WHITE,
                             max_lines=1,
                             overflow=ft.TextOverflow.ELLIPSIS
                         ),
                         ft.Container(
                             content=ft.Text(f"• {self.format_duration(self.duration)}"),
-                            margin=ft.margin.only(left=5, right=5),
-                            color=ft.Colors.WHITE
+                            margin=ft.margin.only(left=5, right=5)
                         ),
                         ft.Text(
                             self.format_file_size(self.size),
-                            size=12,
-                            color=ft.Colors.WHITE
+                            size=12
                         )
                     ])
                 ], expand=True),
@@ -96,11 +90,9 @@ class DownloadItem(ft.Container):
                     content=ft.Text(
                         self.get_status_text(),
                         size=12,
-                        weight=ft.FontWeight.NORMAL,
-                        color=ft.Colors.WHITE
+                        weight=ft.FontWeight.NORMAL
                     ),
                     padding=ft.padding.symmetric(horizontal=8, vertical=4),
-                    bgcolor=self.get_status_color(),
                     border_radius=4
                 )
             ]),
@@ -111,20 +103,16 @@ class DownloadItem(ft.Container):
                     ft.Row([
                         ft.Text(
                             f"{self.progress:.1f}%",
-                            size=12,
-                            color=ft.Colors.WHITE
+                            size=12
                         ),
                         ft.Container(height=10),
                         ft.Text(
                             self.format_speed(),
-                            size=12,
-                            color=ft.Colors.WHITE
+                            size=12
                         )
                     ]),
                     ft.ProgressBar(
-                        value=self.progress / 100,
-                        bgcolor=ft.Colors.GREY_700,
-                        color=ft.Colors.BLUE
+                        value=self.progress / 100
                     )
                 ]),
                 visible=self.status == 'downloading',
@@ -136,20 +124,17 @@ class DownloadItem(ft.Container):
                 content=ft.Row([
                     ft.Icon(
                         "error_outline",
-                        size=16,
-                        color=ft.Colors.RED
+                        size=16
                     ),
                     ft.Text(
                         self.error or "下载失败",
                         size=12,
-                        color=ft.Colors.RED,
                         max_lines=2,
                         overflow=ft.TextOverflow.ELLIPSIS
                     )
                 ]),
                 visible=self.status == 'failed',
                 margin=ft.margin.only(top=8),
-                bgcolor=ft.Colors.with_opacity(0.1, ft.Colors.RED),
                 padding=ft.padding.all(8),
                 border_radius=4
             ),
@@ -165,7 +150,7 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     on_click=self.show_more_options
                 )
-            ], alignment=ft.MainAxisAlignment.START)
+            ]),
         ], spacing=8)
     
     def build_action_buttons(self) -> ft.Row:
@@ -179,7 +164,6 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     tooltip="开始下载",
                     on_click=self.handle_start,
-                    bgcolor=ft.Colors.GREEN,
                     icon_color=ft.Colors.WHITE
                 )
             )
@@ -189,7 +173,6 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     tooltip="删除",
                     on_click=self.handle_cancel,
-                    bgcolor=ft.Colors.RED,
                     icon_color=ft.Colors.WHITE
                 )
             )
@@ -201,7 +184,6 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     tooltip="暂停",
                     on_click=self.handle_pause,
-                    bgcolor=ft.Colors.ORANGE,
                     icon_color=ft.Colors.WHITE
                 )
             )
@@ -211,7 +193,6 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     tooltip="停止",
                     on_click=self.handle_cancel,
-                    bgcolor=ft.Colors.RED,
                     icon_color=ft.Colors.WHITE
                 )
             )
@@ -223,7 +204,6 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     tooltip="继续",
                     on_click=self.handle_resume,
-                    bgcolor=ft.Colors.GREEN,
                     icon_color=ft.Colors.WHITE
                 )
             )
@@ -233,7 +213,6 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     tooltip="删除",
                     on_click=self.handle_cancel,
-                    bgcolor=ft.Colors.RED,
                     icon_color=ft.Colors.WHITE
                 )
             )
@@ -263,7 +242,6 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     tooltip="重试",
                     on_click=self.handle_retry,
-                    bgcolor=ft.Colors.ORANGE,
                     icon_color=ft.Colors.WHITE
                 )
             )
@@ -273,7 +251,6 @@ class DownloadItem(ft.Container):
                     icon_size=20,
                     tooltip="删除",
                     on_click=self.handle_cancel,
-                    bgcolor=ft.Colors.RED,
                     icon_color=ft.Colors.WHITE
                 )
             )
@@ -434,7 +411,6 @@ class CompactDownloadItem(DownloadItem):
                     self.title,
                     size=12,
                     weight=ft.FontWeight.BOLD,
-                    color=ft.Colors.WHITE,
                     max_lines=1,
                     overflow=ft.TextOverflow.ELLIPSIS
                 ),
@@ -442,13 +418,11 @@ class CompactDownloadItem(DownloadItem):
                     ft.Text(
                         self.get_status_text(),
                         size=10,
-                        color=self.get_status_color(),
                         weight=ft.FontWeight.NORMAL
                     ),
                     ft.Text(
                         f"• {self.progress:.0f}%",
                         size=10,
-                        color=ft.Colors.WHITE,
                         visible=self.status == 'downloading'
                     )
                 ], spacing=5)
@@ -458,16 +432,14 @@ class CompactDownloadItem(DownloadItem):
             ft.ProgressBar(
                 value=self.progress / 100,
                 width=100,
-                bgcolor=ft.Colors.GREY_700,
-                color=ft.Colors.BLUE,
                 visible=self.status == 'downloading'
             ),
             
             # 操作按钮（简化）
             ft.Row([
-                self.build_compact_action_buttons()
+                *self.build_compact_action_buttons()
             ], spacing=4)
-        ], alignment=ft.MainAxisAlignment.CENTER)
+        ], spacing=8)
     
     def build_compact_action_buttons(self) -> List[ft.IconButton]:
         """构建紧凑版操作按钮"""

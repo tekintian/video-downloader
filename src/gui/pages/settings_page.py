@@ -37,14 +37,12 @@ class SettingsPage:
                     content=ft.Row([
                         ft.Icon(
                             "settings",
-                            size=32,
-                            color=ft.Colors.BLUE
+                            size=32
                         ),
                         ft.Text(
                             "应用设置",
                             size=28,
-                            weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.WHITE
+                            weight=ft.FontWeight.BOLD
                         )
                     ]),
                     padding=ft.padding.symmetric(vertical=10),
@@ -67,8 +65,7 @@ class SettingsPage:
                                     ft.Icon("restore"),
                                     ft.Text("重置默认")
                                 ]),
-                                on_click=self.reset_settings,
-                                bgcolor=ft.Colors.OUTLINE_VARIANT
+                                on_click=self.reset_settings
                             ),
                             ft.Container(height=10),
                             ft.ElevatedButton(
@@ -76,8 +73,7 @@ class SettingsPage:
                                     ft.Icon("save"),
                                     ft.Text("保存设置")
                                 ]),
-                                on_click=self.save_settings,
-                                bgcolor=ft.Colors.BLUE
+                                on_click=self.save_settings
                             )
                         ]),
                         margin=ft.margin.only(top=20)
@@ -94,12 +90,11 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon("download", color=ft.Colors.BLUE),
+                    ft.Icon("download"
                     ft.Text(
                         "下载设置",
                         size=20,
-                        weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.WHITE
+                        weight=ft.FontWeight.BOLD
                     )
                 ]),
                 ft.Divider(height=1),
@@ -142,7 +137,7 @@ class SettingsPage:
                         width=100,
                         text_align=ft.TextAlign.RIGHT
                     ),
-                    ft.Text("秒", color=ft.Colors.WHITE)
+                    ft.Text("秒"
                 ]),
                 
                 # 重试次数
@@ -158,8 +153,7 @@ class SettingsPage:
                     )
                 ])
             ], spacing=15),
-            padding=ft.padding.all(20),
-            bgcolor=ft.Colors.GREY_700,
+            padding=ft.padding.all(20)
             border_radius=12
         )
     
@@ -168,12 +162,11 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(ft-icons.HD_ROUNDED, color=ft.Colors.BLUE),
+                    ft.Icon(ft-icons.HD_ROUNDED
                     ft.Text(
                         "视频质量",
                         size=20,
-                        weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.WHITE
+                        weight=ft.FontWeight.BOLD
                     )
                 ]),
                 ft.Divider(height=1),
@@ -215,8 +208,7 @@ class SettingsPage:
                     )
                 ])
             ], spacing=15),
-            padding=ft.padding.all(20),
-            bgcolor=ft.Colors.GREY_700,
+            padding=ft.padding.all(20)
             border_radius=12
         )
     
@@ -225,12 +217,11 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(ft-icons.API_ROUNDED, color=ft.Colors.BLUE),
+                    ft.Icon(ft-icons.API_ROUNDED
                     ft.Text(
                         "API设置",
                         size=20,
-                        weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.WHITE
+                        weight=ft.FontWeight.BOLD
                     )
                 ]),
                 ft.Divider(height=1),
@@ -257,13 +248,11 @@ class SettingsPage:
                 
                 ft.Text(
                     "官方API解析速度快但可能受限，yt-dlp兼容性好但速度较慢",
-                    size=12,
-                    color=ft.Colors.WHITE,
+                    size=12
                     italic=True
                 )
             ], spacing=15),
-            padding=ft.padding.all(20),
-            bgcolor=ft.Colors.GREY_700,
+            padding=ft.padding.all(20)
             border_radius=12
         )
     
@@ -272,12 +261,11 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(ft-icons.PALETTE_ROUNDED, color=ft.Colors.BLUE),
+                    ft.Icon(ft-icons.PALETTE_ROUNDED
                     ft.Text(
                         "外观设置",
                         size=20,
-                        weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.WHITE
+                        weight=ft.FontWeight.BOLD
                     )
                 ]),
                 ft.Divider(height=1),
@@ -306,8 +294,7 @@ class SettingsPage:
                     )
                 ])
             ], spacing=15),
-            padding=ft.padding.all(20),
-            bgcolor=ft.Colors.GREY_700,
+            padding=ft.padding.all(20)
             border_radius=12
         )
     
@@ -316,12 +303,11 @@ class SettingsPage:
         return ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(ft-icons.TUNING_ROUNDED, color=ft.Colors.BLUE),
+                    ft.Icon(ft-icons.TUNING_ROUNDED
                     ft.Text(
                         "高级设置",
                         size=20,
-                        weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.WHITE
+                        weight=ft.FontWeight.BOLD
                     )
                 ]),
                 ft.Divider(height=1),
@@ -346,8 +332,7 @@ class SettingsPage:
                     )
                 ])
             ], spacing=15),
-            padding=ft.padding.all(20),
-            bgcolor=ft.Colors.GREY_700,
+            padding=ft.padding.all(20)
             border_radius=12
         )
     
@@ -425,8 +410,7 @@ class SettingsPage:
     async def show_message(self, message: str, page: ft.Page, error: bool = False):
         """显示消息"""
         snack_bar = ft.SnackBar(
-            content=ft.Text(message),
-            bgcolor=ft.Colors.RED if error else ft.Colors.GREEN
+            content=ft.Text(message)
         )
         page.snack_bar = snack_bar
         snack_bar.open = True

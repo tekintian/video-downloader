@@ -1,8 +1,8 @@
-"""下载页面 - 下载管理界面"""
+"""下载页 - 显示和管理下载任务"""
 
 import flet as ft
-from typing import Callable, Dict, Any, List
-import datetime
+from typing import List, Dict, Any, Callable
+from datetime import datetime
 
 from ..components.download_item import DownloadItem
 from ..services.gui_service import GUIService
@@ -12,166 +12,81 @@ class DownloadPage:
     """下载页面"""
     
     def __init__(self, 
-                 gui_service: GUIService,
-                 downloads: List[Dict[str, Any]]):
-        self.gui_service = gui_service
-        self.downloads = downloads
-        self.selected_items = set()
-        
+                 on_download_complete: Callable,
+                 on_download_delete: Callable,
+                 gui_service: GUIService):
+        self.on_download_complete = on_download_complete,
+        self.on_download_delete = on_download_delete,
+        self.gui_service = gui_service,
+        self.downloads: List[Dict[str, Any]] = []
+        self.selected_download: str = None
+    
     def build(self) -> ft.Column:
         """构建下载页面UI"""
-        return ft.Column(
-            controls=[
-                # 页面标题
-                ft.Container(
-                    content=ft.Row([
-                        ft.Icon(
-                            "download",
-                            size=32,
-                            color=ft.Colors.BLUE
-                        ),
-                        ft.Text(
-                            "下载管理",
-                            size=28,
-                            weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.WHITE
-                        ),
-                        ft.Container(height=10),
-                        # 操作按钮
-                        ft.Row([
-                            ft.ElevatedButton(
-                                content=ft.Row([
-                                    ft.Icon("play_arrow"),
-                                    ft.Text("全部开始")
-                                ]),
-                                on_click=self.start_all_downloads,
-                                bgcolor=ft.Colors.GREEN
-                            ),
-                            ft.ElevatedButton(
-                                content=ft.Row([
-                                    ft.Icon("pause"),
-                                    ft.Text("全部暂停")
-                                ]),
-                                on_click=self.pause_all_downloads,
-                                bgcolor=ft.Colors.ORANGE
-                            ),
-                            ft.ElevatedButton(
-                                content=ft.Row([
-                                    ft.Icon("delete_rounded"),
-                                    ft.Text("清理完成")
-                                ]),
-                                on_click=self.clear_completed,
-                                bgcolor=ft.Colors.RED
-                            )
-                        ])
-                    ]),
-                    padding=ft.padding.symmetric(vertical=10),
-                    margin=ft.margin.only(bottom=20)
-                ),
-                
-                # 统计信息
-                self.build_download_stats(),
-                
-                # 下载列表
-                ft.Container(
-                    content=ft.Column(
-                        controls=[
-                            ft.Row([
-                                ft.Checkbox(
-                                    value=False,
-                                    on_change=self.toggle_select_all
-                                ),
-                                ft.Text(
-                                    "全选",
-                                    size=14,
-                                    weight=ft.FontWeight.NORMAL
-                                ),
-                                ft.Container(height=10),
-                                ft.Text(
-                                    f"共 {len(self.downloads)} 个下载",
-                                    size=14,
-                                    color=ft.Colors.WHITE
-                                )
-                            ]),
-                            ft.Divider(height=1),
-                        ] + self.build_download_list()
-                    ),
-                    border=ft.border.all(1, ft.Colors.OUTLINE_VARIANT),
-                    border_radius=8,
-                    padding=ft.padding.all(10),
-                    expand=True
-                ),
-                
-                # 底部操作栏
-                self.build_bottom_actions()
-            ],
-            scroll=ft.ScrollMode.AUTO,
-            expand=True,
-            spacing=10
-        )
+        return ft.Column([
+            # 页面标题
+            ft.Container(
+                content=ft.Row([
+                    ft.Icon("download"),
+                    ft.Text("下载管理", size=24, weight=ft.FontWeight.BOLD)
+                ]),
+                padding=ft.padding.all(20)
+            ),
+            
+            # 统计信息
+            self.build_stats_section(),
+            
+            # 下载列表
+            self.build_download_list(),
+            
+            # 操作按钮
+            self.build_action_buttons()], spacing=10, scroll=ft.ScrollMode.AUTO),
     
-    def build_download_stats(self) -> ft.Container:
-        """构建下载统计"""
-        stats = self.calculate_stats()
+    def build_stats_section(self) -> ft.Container:
+        """构建统计信息区域"""
+        stats = self.gui_service.get_download_stats()
         
         return ft.Container(
-            content=ft.Row([
-                self.build_stat_item(
-                    "等待中", 
-                    stats['pending'], 
-                    ft.colors.ORANGE,
-                    "hourglass_empty"
-                ),
-                self.build_stat_item(
-                    "下载中", 
-                    stats['downloading'], 
-                    ft.colors.BLUE,
-                    "downloading"
-                ),
-                self.build_stat_item(
-                    "已完成", 
-                    stats['completed'], 
-                    ft.colors.GREEN,
-                    "check_circle"
-                ),
-                self.build_stat_item(
-                    "已失败", 
-                    stats['failed'], 
-                    ft.colors.ERROR,
-                    "error"
-                ),
-            ], alignment=ft.MainAxisAlignment.SPACE_AROUND),
-            padding=ft.padding.all(15),
-            bgcolor=ft.Colors.GREY_700,
-            border_radius=8,
-            margin=ft.margin.only(bottom=20)
+            content=ft.Column([
+                ft.Text("下载统计", size=18, weight=ft.FontWeight.BOLD),
+                ft.Row([
+                    self.build_stat_item(
+                        "等待中", 
+                        stats['pending'], 
+                        ft.Colors.ORANGE,
+                        "hourglass_empty"
+                    ),
+                    self.build_stat_item(
+                        "下载中", 
+                        stats['downloading'], 
+                        ft.Colors.BLUE,
+                        "downloading"
+                    ),
+                    self.build_stat_item(
+                        "已完成", 
+                        stats['completed'], 
+                        ft.Colors.GREEN,
+                        "check_circle"
+                    ),
+                    self.build_stat_item(
+                        "已失败", 
+                        stats['failed'], 
+                        ft.Colors.RED,
+                        "error"
+                    )])], spacing=20),
+            padding=ft.padding.all(15)
         )
     
-    def build_stat_item(self, label: str, value: int, color: str, icon: str) -> ft.Container:
+    def build_stat_item(self, label: str, value: int, color: str, icon: str):
         """构建统计项"""
-        return ft.Container(
-            content=ft.Column([
-                ft.Row([
-                    ft.Icon(icon, size=20, color=color),
-                    ft.Text(
-                        label,
-                        size=14,
-                        color=ft.Colors.WHITE
-                    )
-                ]),
-                ft.Text(
-                    str(value),
-                    size=24,
-                    weight=ft.FontWeight.BOLD,
-                    color=color
-                )
-            ], 
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            spacing=5),
-            width=100,
-            height=80,
-            alignment=ft.alignment.center
-        )
+        # 简化的统计项，避免Container color参数问题
+        return ft.Row([
+            ft.Icon(icon, size=20),
+            ft.Column([
+                ft.Text(label, size=14),
+                ft.Text(str(value), size=24, weight=ft.FontWeight.BOLD)
+            ])
+        ])
     
     def build_download_list(self) -> List[ft.Control]:
         """构建下载列表"""
@@ -179,182 +94,82 @@ class DownloadPage:
             return [
                 ft.Container(
                     content=ft.Column([
-                        ft.Icon(
-                            "download_off",
-                            size=64,
-                            color=ft.Colors.WHITE
-                        ),
-                        ft.Text(
-                            "暂无下载任务",
-                            size=18,
-                            color=ft.Colors.WHITE,
-                            weight=ft.FontWeight.NORMAL
-                        ),
-                        ft.Text(
-                            "在主页输入视频链接开始下载",
-                            size=14,
-                            color=ft.Colors.WHITE
-                        )
+                        ft.Icon("download_off", size=48),
+                        ft.Text("暂无下载任务", size=16)
                     ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                     height=200,
-                    alignment=ft.alignment.center
                 )
             ]
         
-        download_items = []
-        for i, download in enumerate(self.downloads):
-            download_item = DownloadItem(
-                download=download,
-                on_pause=lambda e, d=download: self.pause_download(d),
-                on_resume=lambda e, d=download: self.resume_download(d),
-                on_cancel=lambda e, d=download: self.cancel_download(d),
-                on_retry=lambda e, d=download: self.retry_download(d),
-                on_select=lambda e, d=download: self.toggle_select(d)
-            )
-            download_items.append(download_item.build())
-        
-        return download_items
+        return [
+            ft.Container(
+                content=ft.Column([
+                    ft.ListTile(
+                        leading=ft.Icon("play_arrow"),
+                        title=ft.Text(download['title']),
+                        subtitle=ft.Text(
+                            f"状态: {download.get('status', 'unknown')} | "
+                            f"进度: {download.get('progress', 0)}%"
+                        ),
+                        on_click=lambda e, d=download: self.select_download(d)
+                    ),
+                    ft.Divider(color=ft.Colors.GREY_600)]),
+                margin=ft.margin.symmetric(vertical=5)
+            ) for download in self.downloads
+        ]
     
-    def build_bottom_actions(self) -> ft.Container:
-        """构建底部操作栏"""
-        selected_count = len(self.selected_items)
-        
+    def build_action_buttons(self) -> ft.Container:
+        """构建操作按钮区域"""
         return ft.Container(
             content=ft.Row([
-                ft.Text(
-                    f"已选择 {selected_count} 项",
-                    size=14,
-                    color=ft.Colors.WHITE
+                ft.ElevatedButton(
+                    "清理完成", 
+                    icon="delete_sweep",
+                    on_click=self.clear_completed
                 ),
-                ft.Container(height=10),
-                ft.Row([
-                    ft.ElevatedButton(
-                        content=ft.Row([
-                            ft.Icon("delete_sweep"),
-                            ft.Text("删除选中")
-                        ]),
-                        on_click=self.delete_selected,
-                        disabled=selected_count == 0,
-                        bgcolor=ft.Colors.RED
-                    ),
-                    ft.ElevatedButton(
-                        content=ft.Row([
-                            ft.Icon("play_arrow"),
-                            ft.Text("开始选中")
-                        ]),
-                        on_click=self.start_selected,
-                        disabled=selected_count == 0,
-                        bgcolor=ft.Colors.GREEN
-                    )
-                ])
-            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-            padding=ft.padding.all(15),
-            bgcolor=ft.Colors.GREY_700,
-            border_radius=8,
-            margin=ft.margin.only(top=20)
+                ft.ElevatedButton(
+                    "全部开始", 
+                    icon="play_arrow",
+                    on_click=self.start_all
+                ),
+                ft.ElevatedButton(
+                    "全部暂停", 
+                    icon="pause",
+                    on_click=self.pause_all
+                )]),
+            padding=ft.padding.all(15)
         )
     
-    def calculate_stats(self) -> Dict[str, int]:
-        """计算下载统计"""
-        stats = {
-            'pending': 0,
-            'downloading': 0,
-            'completed': 0,
-            'failed': 0
-        }
-        
-        for download in self.downloads:
-            status = download.get('status', 'pending')
-            stats[status] = stats.get(status, 0) + 1
-        
-        return stats
+    def select_download(self, download: Dict[str, Any]):
+        """选择下载项"""
+        self.selected_download = download['id']
     
-    async def toggle_select_all(self, e):
-        """切换全选"""
-        select_all = e.control.value
-        self.selected_items.clear()
-        
-        if select_all:
-            for download in self.downloads:
-                if download.get('status') != 'completed':
-                    self.selected_items.add(download['id'])
-        
-        # 更新UI
-        self.page.update()
-    
-    def toggle_select(self, download: Dict[str, Any]):
-        """切换单项选择"""
-        download_id = download['id']
-        if download_id in self.selected_items:
-            self.selected_items.remove(download_id)
-        else:
-            self.selected_items.add(download_id)
-    
-    async def start_all_downloads(self, e):
-        """开始所有下载"""
-        for download in self.downloads:
-            if download['status'] in ['pending', 'paused', 'failed']:
-                download['status'] = 'downloading'
-        self.page.update()
-    
-    async def pause_all_downloads(self, e):
-        """暂停所有下载"""
-        for download in self.downloads:
-            if download['status'] == 'downloading':
-                download['status'] = 'paused'
-        self.page.update()
-    
-    async def clear_completed(self, e):
+    def clear_completed(self, e):
         """清理已完成的下载"""
-        self.downloads = [
-            d for d in self.downloads 
-            if d.get('status') != 'completed'
-        ]
-        self.page.update()
+        completed_downloads = [d for d in self.downloads if d.get('status') == 'completed']
+        if completed_downloads:
+            for download in completed_downloads:
+                self.downloads.remove(download)
+                self.on_download_delete(download)
     
-    async def pause_download(self, download: Dict[str, Any]):
-        """暂停单个下载"""
-        download['status'] = 'paused'
-        self.page.update()
+    def start_all(self, e):
+        """开始所有下载"""
+        pending_downloads = [d for d in self.downloads if d.get('status') == 'pending']
+        for download in pending_downloads:
+            download['status'] = 'downloading'
+            # 这里应该调用实际的下载逻辑
+            # 暂时模拟
+            download['progress'] = 50
     
-    async def resume_download(self, download: Dict[str, Any]):
-        """恢复单个下载"""
-        download['status'] = 'downloading'
-        self.page.update()
+    def pause_all(self, e):
+        """暂停所有下载"""
+        downloading_downloads = [d for d in self.downloads if d.get('status') == 'downloading']
+        for download in downloading_downloads:
+            download['status'] = 'paused'
     
-    async def cancel_download(self, download: Dict[str, Any]):
-        """取消下载"""
-        self.downloads.remove(download)
-        self.page.update()
-    
-    async def retry_download(self, download: Dict[str, Any]):
-        """重试下载"""
-        download['status'] = 'pending'
-        download['progress'] = 0
-        download['error'] = None
-        self.page.update()
-    
-    async def delete_selected(self, e):
-        """删除选中项"""
-        selected_ids = list(self.selected_items)
-        for download_id in selected_ids:
-            self.downloads = [
-                d for d in self.downloads 
-                if d['id'] != download_id
-            ]
-        self.selected_items.clear()
-        self.page.update()
-    
-    async def start_selected(self, e):
-        """开始选中项"""
-        for download in self.downloads:
-            if download['id'] in self.selected_items:
-                download['status'] = 'downloading'
-        self.page.update()
-    
-    @property
-    def page(self):
-        """获取页面引用"""
-        # 这里需要从外部传入页面引用
-        # 为了简化，暂时返回None，实际使用时需要调整
-        return None
+    def refresh_downloads(self):
+        """刷新下载列表"""
+        self.downloads = self.gui_service.get_downloads()
+        # 这里应该更新UI
+        if hasattr(self, 'page_ref') and self.page_ref:
+            self.page_ref.update()

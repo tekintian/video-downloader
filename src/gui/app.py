@@ -1,7 +1,7 @@
 """Flet主应用 - 四端统一视频下载器"""
 
 import asyncio
-import datetime
+import datetime as _datetime
 from typing import Optional, Dict, Any, List
 import flet as ft
 from flet import Page, View, AppBar, IconButton, Text
@@ -38,26 +38,24 @@ class VideoDownloaderApp:
         # 记录启动日志以便排查 GUI 未出现的问题
         try:
             from pathlib import Path
-            import datetime
-            Path('flet-start.log').write_text(f"main started at {datetime.datetime.now().isoformat()}, page.web={getattr(page, 'web', None)}\n")
+            Path('flet-start.log').write_text(f"main started at {_datetime.datetime.now().isoformat()}, page.web={getattr(page, 'web', None)}\n")
         except Exception:
             pass
 
         try:
             await self.setup_page(page)
             from pathlib import Path
-            import datetime
-            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"setup_page done at {datetime.datetime.now().isoformat()}\n")
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"setup_page done at {_datetime.datetime.now().isoformat()}\n")
 
             await self.setup_navigation(page)
-            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"setup_navigation done at {datetime.datetime.now().isoformat()}\n")
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"setup_navigation done at {_datetime.datetime.now().isoformat()}\n")
             
             # 显示默认页面
             await self.show_home()
-            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"show_home done at {datetime.datetime.now().isoformat()}\n")
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"show_home done at {_datetime.datetime.now().isoformat()}\n")
             
             page.update()
-            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"page.update called at {datetime.datetime.now().isoformat()}\n")
+            Path('flet-start.log').write_text(Path('flet-start.log').read_text() + f"page.update called at {_datetime.datetime.now().isoformat()}\n")
         except Exception as e:
             import traceback
             from pathlib import Path
@@ -96,10 +94,9 @@ class VideoDownloaderApp:
             title=Text(
                 "Video Downloader", 
                 size=24, 
-                weight=ft.FontWeight.BOLD
+                weight=ft.FontWeight.BOLD,
             ),
-            center_title=True,
-            bgcolor=ft.Colors.GREY_700,
+            
             actions=[
                 IconButton(
                     "home",
@@ -137,8 +134,7 @@ class VideoDownloaderApp:
             ft.View(
                 "/",
                 [home_page.build()],
-                padding=ft.padding.all(10),
-                bgcolor=ft.Colors.WHITE
+                padding=ft.padding.all(10)
             )
         )
     
@@ -154,8 +150,7 @@ class VideoDownloaderApp:
             ft.View(
                 "/downloads",
                 [download_page.build()],
-                padding=ft.padding.all(10),
-                bgcolor=ft.Colors.WHITE
+                padding=ft.padding.all(10)
             )
         )
     
@@ -168,8 +163,7 @@ class VideoDownloaderApp:
             ft.View(
                 "/player",
                 [player_page.build()],
-                padding=ft.padding.all(10),
-                bgcolor=ft.Colors.WHITE
+                padding=ft.padding.all(10)
             )
         )
     
@@ -184,8 +178,7 @@ class VideoDownloaderApp:
             ft.View(
                 "/settings",
                 [settings_page.build()],
-                padding=ft.padding.all(10),
-                bgcolor=ft.Colors.WHITE
+                padding=ft.padding.all(10)
             )
         )
     
@@ -232,7 +225,7 @@ class VideoDownloaderApp:
                 'video_info': video_info,
                 'status': 'pending',
                 'progress': 0,
-                'created_at': datetime.datetime.now()
+                'created_at': _datetime.datetime.now()
             }
             
             self.downloads.append(download_item)
@@ -244,11 +237,11 @@ class VideoDownloaderApp:
             await self.start_download(download_item)
             
         except Exception as e:
-            import logging, traceback, pathlib, datetime
+            import logging, traceback, pathlib
             traceback_text = traceback.format_exc()
             logging.error(f"URL解析错误: {e}")
             # 将完整的 traceback 写入文件，便于打包后查看
-            pathlib.Path('last-exception.log').write_text(f"{datetime.datetime.now().isoformat()}\n" + traceback_text)
+            pathlib.Path('last-exception.log').write_text(f"{_datetime.datetime.now().isoformat()}\n" + traceback_text)
             await self.show_error(f"解析失败: {str(e)}")
         finally:
             self.hide_loading()
@@ -299,8 +292,7 @@ class VideoDownloaderApp:
     async def show_error(self, message: str):
         """显示错误提示"""
         snack_bar = ft.SnackBar(
-            Text(message),
-            bgcolor=ft.Colors.RED
+            Text(message)
         )
         if self.page:
             self.page.snack_bar = snack_bar
@@ -310,8 +302,7 @@ class VideoDownloaderApp:
     async def show_success(self, message: str):
         """显示成功提示"""
         snack_bar = ft.SnackBar(
-            Text(message),
-            bgcolor=ft.Colors.GREEN
+            Text(message)
         )
         if self.page:
             self.page.snack_bar = snack_bar
@@ -321,8 +312,7 @@ class VideoDownloaderApp:
     async def show_info(self, message: str):
         """显示信息提示"""
         snack_bar = ft.SnackBar(
-            Text(message),
-            bgcolor=ft.Colors.BLUE
+            Text(message)
         )
         if self.page:
             self.page.snack_bar = snack_bar

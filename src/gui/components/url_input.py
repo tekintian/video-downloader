@@ -8,8 +8,8 @@ class URLInput(ft.Container):
     """URL输入组件，支持拖拽和输入"""
     
     def __init__(self, on_submit: Callable[[str], None], placeholder: str = ""):
-        self.on_submit = on_submit
-        self.placeholder = placeholder
+        self.on_submit = on_submit,
+        self.placeholder = placeholder,
         self.page_ref = None
         
         # URL输入框
@@ -39,7 +39,7 @@ class URLInput(ft.Container):
                 shape=ft.RoundedRectangleBorder(radius=8),
                 elevation=2
             ),
-            height=50
+            height=50,
         )
         
         # 拖拽区域
@@ -50,18 +50,15 @@ class URLInput(ft.Container):
                     ft.Icon(
                         "cloud_upload",
                         size=48,
-                        color=ft.Colors.WHITE
                     ),
                     ft.Text(
                         "拖拽视频链接到这里",
                         size=16,
-                        color=ft.Colors.WHITE,
                         weight=ft.FontWeight.NORMAL
                     ),
                     ft.Text(
                         "支持B站、YouTube、抖音等平台",
                         size=12,
-                        color=ft.Colors.WHITE
                     )
                 ], 
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -70,7 +67,6 @@ class URLInput(ft.Container):
                 height=120,
                 border=ft.border.all(2, ft.Colors.OUTLINE_VARIANT),
                 border_radius=12,
-                bgcolor=ft.Colors.GREY_700,
                 alignment=ft.alignment.center
             ),
             on_accept=self.handle_drag_accept,
@@ -87,10 +83,10 @@ class URLInput(ft.Container):
                     ft.Row([
                         self.url_field,
                         self.submit_button
-                    ], alignment=ft.MainAxisAlignment.CENTER),
+                    ]),
                     
                     # 分隔线
-                    ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+                    ft.Divider(height=20),
                     
                     # 拖拽区域
                     self.drag_target,
@@ -103,12 +99,10 @@ class URLInput(ft.Container):
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER)
             ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
             padding=ft.padding.all(25),
-            bgcolor=ft.Colors.GREY_800,
             border_radius=12,
             shadow=ft.BoxShadow(
                 spread_radius=1,
                 blur_radius=8,
-                color=ft.Colors.with_opacity(0.1, ft.Colors.BLACK),
                 offset=ft.Offset(0, 2)
             )
         )
@@ -118,8 +112,7 @@ class URLInput(ft.Container):
         platforms = [
             {"name": "Bilibili", "icon": "sports_esports", "example": "BV123456789"},
             {"name": "YouTube", "icon": "play_circle", "example": "dQw4w9WgXcQ"},
-            {"name": "抖音", "icon": "music_note", "example": "7351234567890"},
-        ]
+            {"name": "抖音", "icon": "music_note", "example": "7351234567890"}]
         
         link_buttons = []
         for platform in platforms:
@@ -129,22 +122,18 @@ class URLInput(ft.Container):
                         ft.Icon(
                             platform["icon"],
                             size=24,
-                            color=ft.Colors.BLUE
                         ),
                         ft.Text(
                             platform["name"],
                             size=12,
-                            weight=ft.FontWeight.NORMAL,
-                            color=ft.Colors.WHITE
+                            weight=ft.FontWeight.NORMAL
                         )
                     ], 
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     spacing=4),
                     width=70,
                     height=60,
-                    bgcolor=ft.Colors.GREY_700,
                     border_radius=8,
-                    alignment=ft.alignment.center,
                     margin=ft.margin.only(right=10),
                     on_click=lambda e, p=platform["example"]: self._handle_example_click(p)
                 )
@@ -154,18 +143,17 @@ class URLInput(ft.Container):
             ft.Text(
                 "快捷测试链接：",
                 size=14,
-                color=ft.Colors.WHITE,
                 weight=ft.FontWeight.NORMAL
             ),
             ft.Row(link_buttons, wrap=True)
-        ], spacing=8)
+        ], spacing=8),
     
     def _handle_example_click(self, example: str):
         """处理示例链接点击（同步方法）"""
         if example == "BV123456789":
-            self.url_field.value = "https://www.bilibili.com/video/BV1GJ411x7h7"
+            self.url_field.value = "https://www.bilibili.com/video/BV1GJ411x7h7",
         elif example == "dQw4w9WgXcQ":
-            self.url_field.value = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            self.url_field.value = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         elif example == "7351234567890":
             self.url_field.value = "https://v.douyin.com/ieFwNfGQ/"
         
@@ -175,9 +163,9 @@ class URLInput(ft.Container):
     async def insert_example(self, example: str):
         """插入示例链接"""
         if example == "BV123456789":
-            self.url_field.value = "https://www.bilibili.com/video/BV1GJ411x7h7"
+            self.url_field.value = "https://www.bilibili.com/video/BV1GJ411x7h7",
         elif example == "dQw4w9WgXcQ":
-            self.url_field.value = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            self.url_field.value = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         elif example == "7351234567890":
             self.url_field.value = "https://v.douyin.com/ieFwNfGQ/"
         
@@ -246,7 +234,7 @@ class URLInput(ft.Container):
     
     def show_loading_state(self):
         """显示加载状态"""
-        self.submit_button.disabled = True
+        self.submit_button.disabled = True,
         self.submit_button.content = ft.Row([
             ft.ProgressRing(width=20, height=20),
             ft.Text("解析中...", weight=ft.FontWeight.BOLD)
@@ -257,7 +245,7 @@ class URLInput(ft.Container):
     
     def hide_loading_state(self):
         """隐藏加载状态"""
-        self.submit_button.disabled = False
+        self.submit_button.disabled = False,
         self.submit_button.content = ft.Row([
             ft.Icon("search"),
             ft.Text("解析", weight=ft.FontWeight.BOLD)
@@ -270,10 +258,9 @@ class URLInput(ft.Container):
         """显示错误消息"""
         if self.page_ref:
             snack_bar = ft.SnackBar(
-                content=ft.Text(message),
-                bgcolor=ft.Colors.RED
+                content=ft.Text(message)
             )
-            self.page_ref.snack_bar = snack_bar
+            self.page_ref.snack_bar = snack_bar,
             snack_bar.open = True
             self.page_ref.update()
     
@@ -281,10 +268,9 @@ class URLInput(ft.Container):
         """显示成功消息"""
         if self.page_ref:
             snack_bar = ft.SnackBar(
-                content=ft.Text(message),
-                bgcolor=ft.Colors.GREEN
+                content=ft.Text(message)
             )
-            self.page_ref.snack_bar = snack_bar
+            self.page_ref.snack_bar = snack_bar,
             snack_bar.open = True
             self.page_ref.update()
     

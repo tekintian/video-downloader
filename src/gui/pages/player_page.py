@@ -24,14 +24,12 @@ class PlayerPage:
                     content=ft.Row([
                         ft.Icon(
                             "play_arrow",
-                            size=32,
-                            color=ft.Colors.BLUE
+                            size=32
                         ),
                         ft.Text(
                             "视频播放器",
                             size=28,
-                            weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.WHITE
+                            weight=ft.FontWeight.BOLD
                         ),
                         ft.Container(height=10),
                         # 打开文件按钮
@@ -72,21 +70,17 @@ class PlayerPage:
                 ft.Container(
                     content=self.get_video_display(),
                     width=800,
-                    height=450,
-                    bgcolor=ft.Colors.BLACK,
-                    border_radius=12,
-                    alignment=ft.alignment.center
+                    height=450
+                    border_radius=12
                 ),
                 
                 # 中心播放按钮（当没有视频时显示）
                 ft.Container(
                     content=ft.Icon(
                         "play_circle",
-                        size=80,
-                        color=ft.Colors.WHITE
+                        size=80
                     ),
-                    visible=not self.current_video,
-                    alignment=ft.alignment.center
+                    visible=not self.current_video
                 )
             ]),
             margin=ft.margin.only(bottom=20)
@@ -109,13 +103,11 @@ class PlayerPage:
             return ft.Column([
                 ft.Icon(
                     "video_library",
-                    size=120,
-                    color=ft.Colors.WHITE
+                    size=120
                 ),
                 ft.Text(
                     "请选择视频文件",
-                    size=18,
-                    color=ft.Colors.WHITE
+                    size=18
                 )
             ], horizontal_alignment=ft.CrossAxisAlignment.CENTER)
     
@@ -157,8 +149,7 @@ class PlayerPage:
                     # 时间显示
                     ft.Text(
                         self.format_time(self.current_time) + " / " + self.format_time(self.total_time),
-                        size=14,
-                        color=ft.Colors.WHITE
+                        size=14
                     ),
                     
                     ft.Container(height=10),
@@ -167,8 +158,7 @@ class PlayerPage:
                     ft.Row([
                         ft.Icon(
                             "volume_up",
-                            size=24,
-                            color=ft.Colors.WHITE
+                            size=24
                         ),
                         ft.Slider(
                             value=50,
@@ -187,8 +177,7 @@ class PlayerPage:
                     )
                 ])
             ]),
-            padding=ft.padding.all(15),
-            bgcolor=ft.Colors.GREY_700,
+            padding=ft.padding.all(15)
             border_radius=8,
             margin=ft.margin.only(bottom=20)
         )
@@ -219,20 +208,17 @@ class PlayerPage:
                 ft.Row([
                     ft.Icon(
                         "queue_play_next",
-                        size=24,
-                        color=ft.Colors.BLUE
+                        size=24
                     ),
                     ft.Text(
                         "播放列表",
                         size=18,
-                        weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.WHITE
+                        weight=ft.FontWeight.BOLD
                     ),
                     ft.Container(height=10),
                     ft.Text(
                         f"{len(playlist_items)} 个视频",
-                        size=14,
-                        color=ft.Colors.WHITE
+                        size=14
                     )
                 ]),
                 ft.Divider(height=1),
@@ -258,14 +244,11 @@ class PlayerPage:
                 ft.Container(
                     content=ft.Icon(
                         "video_file" if not is_current else "play_arrow",
-                        size=32,
-                        color=ft.Colors.BLUE if is_current else ft.Colors.WHITE
+                        size=32
                     ),
                     width=60,
-                    height=40,
-                    bgcolor=ft.Colors.GREY_700,
-                    border_radius=4,
-                    alignment=ft.alignment.center
+                    height=40
+                    border_radius=4
                 ),
                 
                 # 视频信息
@@ -273,13 +256,11 @@ class PlayerPage:
                     ft.Text(
                         item['title'],
                         size=14,
-                        weight=ft.FontWeight.BOLD if is_current else ft.FontWeight.NORMAL,
-                        color=ft.Colors.BLUE if is_current else ft.Colors.WHITE
+                        weight=ft.FontWeight.BOLD if is_current else ft.FontWeight.NORMAL
                     ),
                     ft.Text(
                         self.format_time(item['duration']),
-                        size=12,
-                        color=ft.Colors.WHITE
+                        size=12
                     )
                 ]),
                 
@@ -299,8 +280,7 @@ class PlayerPage:
                     )
                 ])
             ]),
-            padding=ft.padding.symmetric(vertical=8, horizontal=10),
-            bgcolor=ft.Colors.GREY_700 if is_current else ft.Colors.TRANSPARENT,
+            padding=ft.padding.symmetric(vertical=8, horizontal=10)
             border_radius=6,
             margin=ft.margin.only(bottom=5)
         )
