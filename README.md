@@ -18,7 +18,7 @@ A modern, feature-rich video downloading tool with multi-threading support, buil
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/video-downloader.git
+git clone https://github.com/tekintian/video-downloader.git
 cd video-downloader
 pip install -r requirements.txt
 pip install -e .
@@ -155,7 +155,7 @@ video_down/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/video-downloader.git
+git clone https://github.com/tekintian/video-downloader.git
 cd video-downloader
 
 # Create virtual environment
@@ -242,9 +242,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 
-1. Check the [Issues](https://github.com/yourusername/video-downloader/issues) page
+1. Check the [Issues](https://github.com/tekintian/video-downloader/issues) page
 2. Create a new issue with detailed information
-3. Join our [Discussions](https://github.com/yourusername/video-downloader/discussions) for general questions
+3. Join our [Discussions](https://github.com/tekintian/video-downloader/discussions) for general questions
 
 ---
 

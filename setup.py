@@ -17,11 +17,11 @@ setup(
     name="video-downloader",
     version="1.0.0",
     author="Video Downloader Team",
-    author_email="team@videodownloader.com",
+    author_email="tekintian@gmail.com",
     description="A modern video downloading tool with multi-threading support",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/video-downloader",
+    url="https://github.com/tekintian/video-downloader",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",

@@ -1,0 +1,28 @@
+# GUI-related dependencies
+flet>=0.17.0
+flet[android]>=0.17.0
+flet[ios]>=0.17.0
+
+# Multimedia support
+ffpyplayer>=4.3.5
+Pillow>=10.0.0
+
+# Existing dependencies (unchanged)
+requests>=2.31.0
+yt-dlp>=2025.12.8
+click>=8.1.7
+rich>=13.4.2
+pydantic>=2.12.5
+pydantic-settings>=2.12.0
+loguru>=0.7.0
+tenacity>=8.2.2
+aiohttp>=3.8.5
+aiofiles>=23.1.0
+pathvalidate>=3.0.0
+
+# Development tools (optional)
+# buildozer>=1.4.0
+# flet-pack>=0.6.0
+
+# Mobile support (optional)
+plyer>=2.1.0

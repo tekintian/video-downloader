@@ -9,7 +9,7 @@ description = "A modern video downloading tool with multi-threading support"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Video Downloader Team", email = "team@videodownloader.com"},
+    {name = "Video Downloader Team", email = "tekintian@gmail.com"},
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -40,6 +40,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+gui = [
+    "flet>=0.17.0",
+    "flet[android]>=0.17.0",
+    "flet[ios]>=0.17.0",
+    "ffpyplayer>=4.3.5",
+    "Pillow>=10.0.0",
+    "plyer>=2.1.0",
+]
+
 dev = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.21.0",
@@ -49,6 +58,8 @@ dev = [
     "flake8>=6.0.0",
     "mypy>=1.0.0",
     "pre-commit>=3.0.0",
+    "buildozer>=1.4.0",
+    "flet-pack>=0.6.0",
 ]
 
 [project.scripts]
@@ -56,10 +67,10 @@ video-downloader = "src.cli.main:cli"
 vd = "src.cli.main:cli"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/video-downloader"
-Repository = "https://github.com/yourusername/video-downloader"
-Documentation = "https://github.com/yourusername/video-downloader#readme"
-"Bug Tracker" = "https://github.com/yourusername/video-downloader/issues"
+Homepage = "https://github.com/tekintian/video-downloader"
+Repository = "https://github.com/tekintian/video-downloader"
+Documentation = "https://github.com/tekintian/video-downloader#readme"
+"Bug Tracker" = "https://github.com/tekintian/video-downloader/issues"
 
 [tool.setuptools_scm]
 write_to = "src/_version.py"
